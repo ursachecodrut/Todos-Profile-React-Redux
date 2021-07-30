@@ -5,6 +5,7 @@ import { saveProfile } from '../features/profileSlice';
 const ProfileInput = () => {
 	const [name, setName] = useState('');
 	const [email, setEmail] = useState('');
+
 	const dispatch = useDispatch();
 
 	const addProfile = () => {
