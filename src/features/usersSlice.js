@@ -1,60 +1,62 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 const initialState = {
-	loading: '',
+	loading: false,
 	error: '',
 	data: [],
 };
 
-// export const fetchUsers = createAsyncThunk(
-// 	'users/fetchUsers',
-// 	async (endpoint, { getState }) => {
-// 		const res = await fetch(endpoint);
-// 		if (!res.ok) {
-// 			throw Error(res.statusText);
-// 		}
-// 		const json = await res.json();
-// 		return json;
-// 	}
-// );
-
-export const fetchUsers = (endpoint) => {
-	return async (dispatch) => {
-		dispatch(fetchUsersStart());
-		try {
-			const res = await fetch(endpoint);
-			if (!res.ok) throw Error(res.statusText);
-			const json = await res.json();
-			return dispatch(fetchUsersSuccess(json));
-		} catch (error) {
-			return dispatch(fetchUsersFailure(error.message));
+export const fetchUsers = createAsyncThunk(
+	'users/fetchUsers',
+	async (endpoint, { getState }) => {
+		const res = await fetch(endpoint);
+		if (!res.ok) {
+			throw Error(res.statusText);
 		}
-	};
-};
+		const json = await res.json();
+		return json;
+	}
+);
+
+// export const fetchUsers = (endpoint) => {
+// 	return async (dispatch) => {
+// 		dispatch(fetchUsersStart());
+// 		try {
+// 			const res = await fetch(endpoint);
+// 			if (!res.ok) throw Error(res.statusText);
+// 			const json = await res.json();
+// 			return dispatch(fetchUsersSuccess(json));
+// 		} catch (error) {
+// 			return dispatch(fetchUsersFailure(error.message));
+// 		}
+// 	};
+// };
 
 const usersSlice = createSlice({
 	name: 'users',
 	initialState,
 	reducers: {
-		// [fetchUsers.pending]: (state) => {
+		// fetchUsersStart: (state) => {
 		// 	state.loading = 'yes';
 		// },
-		// [fetchUsers.rejected]: (state, action) => {
+		// fetchUsersFailure: (state, action) => {
 		// 	state.loading = '';
 		// 	state.error = action.payload;
 		// },
-		// [fetchUsers.fulfilled]: (state, action) => {
+		// fetchUsersSuccess: (state, action) => {
 		// 	state.loading = '';
 		// 	state.data = action.payload;
 		// },
-		fetchUsersStart: (state) => {
-			state.loading = 'yes';
+	},
+	extraReducers: {
+		[fetchUsers.pending]: (state) => {
+			state.loading = true;
 		},
-		fetchUsersFailure: (state, action) => {
+		[fetchUsers.rejected]: (state, action) => {
 			state.loading = '';
 			state.error = action.payload;
 		},
-		fetchUsersSuccess: (state, action) => {
+		[fetchUsers.fulfilled]: (state, action) => {
 			state.loading = '';
 			state.data = action.payload;
 		},

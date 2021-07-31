@@ -10,9 +10,9 @@ const Users = () => {
 		dispatch(fetchUsers('https://jsonplaceholder.typicode.com/users'));
 	};
 
-	useEffect(() => {
-		dispatch(fetchUsers('https://jsonplaceholder.typicode.com/users'));
-	}, [dispatch]);
+	// useEffect(() => {
+	// 	dispatch(fetchUsers('https://jsonplaceholder.typicode.com/users'));
+	// }, [dispatch]);
 
 	return (
 		<div>
